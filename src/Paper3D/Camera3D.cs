@@ -5,19 +5,24 @@ namespace Paper3D;
 /// <summary>
 /// A camera that exists in 3D space to render 3D objects.
 /// </summary>
-/// <param name="perspective">The parameters used to create the perspective matrix.</param>
-/// <param name="cameraPosition">The position of the camera.</param>
 public class PerspectiveCamera
 {
     private Vector3 _target;
-
+    /// <summary>
+    /// The current view target of the camera.
+    /// </summary>
     public Vector3 Target => _target;
 
     private Vector3 _position;
-
+    /// <summary>
+    /// The current position of the camera.
+    /// </summary>
     public Vector3 Position => _position;
 
     private Matrix _projectionMatrix;
+    /// <summary>
+    /// The perspective matrix as defined by this camera.
+    /// </summary>
     public Matrix ProjectionMatrix => _projectionMatrix;
     private Matrix _viewMatrix;
     public Matrix ViewMatrix => _viewMatrix;
