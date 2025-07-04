@@ -58,7 +58,7 @@ public class Game1 : Game
         triangleVertices = new VertexPositionColor[3];
         triangleVertices[0] = new VertexPositionColor(new Vector3(0, 20, 0), Color.Red);
 
-        triangleVertices[1] = new VertexPositionColor(new Vector3(20, -20, 0), Color.Green);
+        triangleVertices[1] = new VertexPositionColor(new Vector3(-20, -20, 0), Color.Green);
 
         triangleVertices[2] = new VertexPositionColor(new Vector3(20, -20, 0), Color.Blue);
 
