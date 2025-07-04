@@ -7,62 +7,59 @@ namespace Paper3D;
 /// </summary>
 /// <param name="perspective">The parameters used to create the perspective matrix.</param>
 /// <param name="cameraPosition">The position of the camera.</param>
-public class Camera3D(PerspectiveParameters perspective, Vector3 cameraPosition)
+public class PerspectiveCamera
 {
-    // TODO: Integrate field of view changes, among other things
-    Matrix _viewMatrix = Matrix.CreateLookAt(cameraPosition, Vector3.Zero, Vector3.Up);
-    /// <summary>
-    /// The camera's current view matrix.
-    /// </summary>
-    public Matrix ViewMatrix => _viewMatrix;
+    private Vector3 _target;
 
-    /// <summary>
-    /// The camera's current projection matrix.
-    /// </summary>
-    Matrix _projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-            perspective.VerticalFieldOfView,
-            perspective.AspectRatio,
-            perspective.NearClipPlane,
-            perspective.FarClipPlane);
-    public Matrix ProjectionMatrix => _projectionMatrix;
-
-    Matrix _worldMatrix = Matrix.CreateWorld(cameraPosition, Vector3.Forward, Vector3.Up);
-    /// <summary>
-    /// The camera's current world matrix.
-    /// </summary>
-    public Matrix WorldMatrix => _worldMatrix;
+    public Vector3 Target => _target;
 
     private Vector3 _position;
-    /// <summary>
-    /// The current position of the camera.
-    /// </summary>
+
     public Vector3 Position => _position;
 
+    private Matrix _projectionMatrix;
+    public Matrix ProjectionMatrix => _projectionMatrix;
+    private Matrix _viewMatrix;
+    public Matrix ViewMatrix => _viewMatrix;
+    private Matrix _worldMatrix;
+    public Matrix WorldMatrix => _worldMatrix;
+
+    public PerspectiveCamera(Vector3 position, Vector3 viewTarget, float aspectRatio, float fov, AngleUnit unit, float nearClipPlane = 1f, float farClipPlane = 1000f)
+    {
+        _target = viewTarget;
+        _position = position;
+        _projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+            unit == AngleUnit.Radian ? fov : MathHelper.ToRadians(fov),
+            aspectRatio,
+            nearClipPlane,
+            farClipPlane
+        );
+
+        RegenerateViewMatrix();
+        RegenerateWorldMatrix();
+    }
+
     /// <summary>
-    /// Jumps the camera to the target position.
+    /// Sets the camera's position. You'll need to call <see cref="RegenerateViewMatrix"/> once you're done with your work. 
     /// </summary>
-    /// <param name="position">The camera's new position.</param>
-    public void SetPosition(Vector3 position)
+    /// <param name="position">The new camera position;</param>
+    public void SetPositionDeferred(Vector3 position)
     {
         _position = position;
-        RegenerateViewMatrix();
     }
 
     /// <summary>
-    /// Moves the camera by the desired offset.
+    /// Sets the camera's target. You'll need to call <see cref="RegenerateViewMatrix"/> once you're done with your work.
     /// </summary>
-    /// <param name="offset">The amount to move the camera by.</param>
-    public void Translate(Vector3 offset)
+    /// <param name="target">The new target location.</param>
+    public void SetTargetDeferred(Vector3 target)
     {
-        _position += offset;
-        RegenerateViewMatrix();
+        _target = target;
     }
 
     /// <summary>
-    /// Recreates the view matrix. Should be called whenever the camera's position is changed.
+    /// Regenerates the view matrix. You should only call this method as needed
     /// </summary>
-    private void RegenerateViewMatrix()
-    {
-        _viewMatrix = Matrix.CreateLookAt(_position, Vector3.Zero, Vector3.Up);
-    }
+    public void RegenerateViewMatrix() => _viewMatrix = Matrix.CreateLookAt(_position, _target, Vector3.Up);
+    private void RegenerateWorldMatrix() => _worldMatrix = Matrix.CreateWorld(_target, Vector3.Forward, Vector3.Up);
 }

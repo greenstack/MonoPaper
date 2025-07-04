@@ -10,11 +10,11 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
 
     // Camera
-    Vector3 camTarget;
-    Vector3 camPosition;
-    Matrix projectionMatrix;
-    Matrix viewMatrix;
-    Matrix worldMatrix;
+    // Vector3 camTarget;
+    // Vector3 camPosition;
+    // Matrix projectionMatrix;
+    // Matrix viewMatrix;
+    // Matrix worldMatrix;
 
     // Basic effect
     BasicEffect basicEffect;
@@ -32,21 +32,33 @@ public class Game1 : Game
         IsMouseVisible = true;
     }
 
+    PerspectiveCamera _camera;
+
     protected override void Initialize()
     {
         base.Initialize();
 
-        camTarget = new Vector3();
-        camPosition = new Vector3(0, 0, -100f);
-        projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-            MathHelper.ToRadians(45f),
+        _camera = new(
+            new Vector3(0, 0, -100f),
+            Vector3.Zero,
             GraphicsDevice.DisplayMode.AspectRatio,
+            45f,
+            AngleUnit.Degree,
             1f,
             1000f
         );
 
-        viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, Vector3.Up);
-        worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
+        //camTarget = new Vector3();
+        //camPosition = new Vector3(0, 0, -100f);
+        //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+        //    MathHelper.ToRadians(45f),
+        //    GraphicsDevice.DisplayMode.AspectRatio,
+        //    1f,
+        //    1000f
+        //);
+
+        //viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, Vector3.Up);
+        //worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
 
         // BasicEffect
         basicEffect = new BasicEffect(GraphicsDevice);
@@ -78,6 +90,8 @@ public class Game1 : Game
             Exit();
 
         // TODO: Add your update logic here
+        Vector3 camPosition = _camera.Position;
+        Vector3 camTarget = _camera.Target;
         if (Keyboard.GetState().IsKeyDown(Keys.Left))
         {
             camPosition.X -= 1f;
@@ -118,16 +132,19 @@ public class Game1 : Game
             camPosition = Vector3.Transform(camPosition, 
                             rotationMatrix);
         }
-        viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, 
-                        Vector3.Up);
+        _camera.SetPositionDeferred(camPosition);
+        _camera.SetTargetDeferred(camTarget);
+        // Typically we wouldn't want to call this each frame,
+        // but maybe MonoGame has really fast matrix multiplication.
+        _camera.RegenerateViewMatrix();
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        basicEffect.Projection = projectionMatrix;
-        basicEffect.View = viewMatrix;
-        basicEffect.World = worldMatrix;
+        basicEffect.Projection = _camera.ProjectionMatrix;
+        basicEffect.View = _camera.ViewMatrix;
+        basicEffect.World = _camera.WorldMatrix;
 
         GraphicsDevice.Clear(Color.CornflowerBlue);
         GraphicsDevice.SetVertexBuffer(vertexBuffer);

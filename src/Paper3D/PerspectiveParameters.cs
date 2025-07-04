@@ -1,7 +1,7 @@
 namespace Paper3D;
 
 /// <summary>
-/// Provides the necessary parameters to create a <see cref="Camera3D"/>.
+/// Provides the necessary parameters to create a <see cref="PerspectiveCamera"/>.
 /// </summary>
 public readonly struct PerspectiveParameters
 {
