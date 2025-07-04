@@ -21,3 +21,6 @@ And while I'm at it, I might learn Gum, too. That's a UI library for MonoGame.
 
 ## Supporting Libaries
 Okay, it won't be completely drag-and-drop. We're going to rely on MonoGame.Extended's ECS for rendering 3D objects.
+
+## Resources
+https://gamefromscratch.com/monogame-tutorial-beginning-3d-programming/
