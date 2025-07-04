@@ -9,19 +9,8 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    // Camera
-    // Vector3 camTarget;
-    // Vector3 camPosition;
-    // Matrix projectionMatrix;
-    // Matrix viewMatrix;
-    // Matrix worldMatrix;
-
-    // Basic effect
-    BasicEffect basicEffect;
-
-    // Geometric info
+    // // Geometric info
     VertexPositionColor[] triangleVertices;
-    VertexBuffer vertexBuffer;
 
     bool orbit = false;
 
@@ -47,26 +36,6 @@ public class Game1 : Game
             1f,
             1000f
         );
-
-        //camTarget = new Vector3();
-        //camPosition = new Vector3(0, 0, -100f);
-        //projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-        //    MathHelper.ToRadians(45f),
-        //    GraphicsDevice.DisplayMode.AspectRatio,
-        //    1f,
-        //    1000f
-        //);
-
-        //viewMatrix = Matrix.CreateLookAt(camPosition, camTarget, Vector3.Up);
-        //worldMatrix = Matrix.CreateWorld(camTarget, Vector3.Forward, Vector3.Up);
-
-        // BasicEffect
-        basicEffect = new BasicEffect(GraphicsDevice);
-        basicEffect.Alpha = 1f;
-        basicEffect.VertexColorEnabled = true;
-
-        basicEffect.LightingEnabled = false;
-
         triangleVertices = new VertexPositionColor[3];
         triangleVertices[0] = new VertexPositionColor(new Vector3(0, 20, 0), Color.Red);
 
@@ -74,10 +43,12 @@ public class Game1 : Game
 
         triangleVertices[2] = new VertexPositionColor(new Vector3(20, -20, 0), Color.Blue);
 
-        vertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), 3, BufferUsage.WriteOnly);
-        vertexBuffer.SetData(triangleVertices);
+     
+        _triangle = new PrimitiveRender3D(GraphicsDevice, triangleVertices);
     }
 
+
+    PrimitiveRender3D _triangle;
 
     protected override void LoadContent()
     {
@@ -142,22 +113,13 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        basicEffect.Projection = _camera.ProjectionMatrix;
-        basicEffect.View = _camera.ViewMatrix;
-        basicEffect.World = _camera.WorldMatrix;
-
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        GraphicsDevice.SetVertexBuffer(vertexBuffer);
-
         RasterizerState rasterizerState = new RasterizerState();
         rasterizerState.CullMode = CullMode.None;
         GraphicsDevice.RasterizerState = rasterizerState;
 
-        foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
-        {
-            pass.Apply();
-            GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 3);
-        }
+        _triangle.ApplyCamera(_camera);
+        _triangle.Draw(GraphicsDevice);
 
         base.Draw(gameTime);
     }
