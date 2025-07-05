@@ -1,9 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Paper3D;
 
+/// <summary>
+/// How do I move these
+/// </summary>
 public class PrimitiveRender3D : IRender3D
 {
     public BasicEffect Effect { get; }
@@ -25,9 +27,12 @@ public class PrimitiveRender3D : IRender3D
         _vbo.SetData(_triangleVertices);
     }
 
+    // TODO: This probably needs to be virtual - it makes sense for the eventual
+    // billboard render to inherit from this class.
     public void ApplyCamera(PerspectiveCamera camera)
     {
         Effect.View = camera.ViewMatrix;
+        // TODO: Apply a transform matrix to this spot right here
         Effect.World = camera.WorldMatrix;
         Effect.Projection = camera.ProjectionMatrix;
     }
