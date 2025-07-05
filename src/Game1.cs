@@ -46,11 +46,11 @@ public class Game1 : Game
         triangleVertices[2] = new VertexPositionColor(new Vector3(2, -2, 0), Color.Blue);
 
 
-        _triangle = new PrimitiveRender3D(GraphicsDevice, triangleVertices);
+        _triangle = new TriangleListRender3D(GraphicsDevice, triangleVertices);
     }
 
 
-    PrimitiveRender3D _triangle;
+    TriangleListRender3D _triangle;
     ModelRender3D _model;
 
     protected override void LoadContent()

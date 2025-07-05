@@ -6,13 +6,13 @@ namespace Paper3D;
 /// <summary>
 /// Renders a triangle list to the chosen graphics device.
 /// </summary>
-public class PrimitiveRender3D : Render3DBase
+public class TriangleListRender3D : Render3DBase
 {
     private readonly VertexPositionColor[] _triangleVertices;
 
     private readonly VertexBuffer _vbo;
 
-    public PrimitiveRender3D(GraphicsDevice device, IEnumerable<VertexPositionColor> vertices) :
+    public TriangleListRender3D(GraphicsDevice device, IEnumerable<VertexPositionColor> vertices) :
         base(new BasicEffect(device)
         {
             Alpha = 1f,
