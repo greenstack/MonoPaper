@@ -14,6 +14,8 @@ public class Game1 : Game
 
     bool orbit = false;
 
+    Model mesh;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -28,7 +30,7 @@ public class Game1 : Game
         base.Initialize();
 
         _camera = new(
-            new Vector3(0, 0, -100f),
+            new Vector3(0, 0, -10f),
             Vector3.Zero,
             GraphicsDevice.DisplayMode.AspectRatio,
             45f,
@@ -37,22 +39,26 @@ public class Game1 : Game
             1000f
         );
         triangleVertices = new VertexPositionColor[3];
-        triangleVertices[0] = new VertexPositionColor(new Vector3(0, 20, 0), Color.Red);
+        triangleVertices[0] = new VertexPositionColor(new Vector3(0, 2, 0), Color.Red);
 
-        triangleVertices[1] = new VertexPositionColor(new Vector3(-20, -20, 0), Color.Green);
+        triangleVertices[1] = new VertexPositionColor(new Vector3(-2, -2, 0), Color.Green);
 
-        triangleVertices[2] = new VertexPositionColor(new Vector3(20, -20, 0), Color.Blue);
+        triangleVertices[2] = new VertexPositionColor(new Vector3(2, -2, 0), Color.Blue);
 
-     
+
         _triangle = new PrimitiveRender3D(GraphicsDevice, triangleVertices);
     }
 
 
     PrimitiveRender3D _triangle;
+    ModelRender3D _model;
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+         mesh = Content.Load<Model>("MonoCube");
+        _model = new ModelRender3D(mesh);
     }
 
     protected override void Update(GameTime gameTime)
@@ -114,12 +120,17 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
+        RasterizerState defaultState = GraphicsDevice.RasterizerState;
         RasterizerState rasterizerState = new RasterizerState();
         rasterizerState.CullMode = CullMode.None;
         GraphicsDevice.RasterizerState = rasterizerState;
 
         _triangle.ApplyCamera(_camera);
         _triangle.Draw(GraphicsDevice);
+
+        GraphicsDevice.RasterizerState = defaultState;
+        _model.ApplyCamera(_camera);
+        _model.Draw(null);
 
         base.Draw(gameTime);
     }

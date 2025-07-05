@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 
 namespace Paper3D;
 
@@ -15,6 +16,8 @@ public interface IRender3D
 
     // TODO: Introduce a camera interface
     void ApplyCamera(PerspectiveCamera camera);
+
+    void ApplyTransformMatrix();
 
     /// <summary>
     /// Draws the mesh to the targeted graphics device.

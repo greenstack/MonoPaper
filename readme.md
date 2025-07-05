@@ -12,6 +12,9 @@ While it'll be nice to be a drag-and-drop solution, some setup will be required 
 
 And while I'm at it, I might learn Gum, too. That's a UI library for MonoGame.
 
+## Notes
+ - DAE files need the FBX importer, not the Open Asset Importer in the Content Builder.
+
 ## Requirements
  - Good performance is a must. Many of the games I'll release using this rendering engine will be published on web, which is slower than native apps.
  - MUST Render to a render target. This will make resizing the viewport easier in the long run.

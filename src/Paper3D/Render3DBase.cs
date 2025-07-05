@@ -54,7 +54,7 @@ public abstract class Render3DBase(BasicEffect effect) : IRender3D
         ApplyTransformMatrix();
     }
 
-    private void ApplyTransformMatrix()
+    public void ApplyTransformMatrix()
     {
         // TODO: We need to be more clever about this!
         Effect.World *= Transform.WorldMatrix;
