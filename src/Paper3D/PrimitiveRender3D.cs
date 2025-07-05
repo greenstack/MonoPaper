@@ -4,40 +4,29 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Paper3D;
 
 /// <summary>
-/// How do I move these
+/// Renders a triangle list to the chosen graphics device.
 /// </summary>
-public class PrimitiveRender3D : IRender3D
+public class PrimitiveRender3D : Render3DBase
 {
-    public BasicEffect Effect { get; }
+    private readonly VertexPositionColor[] _triangleVertices;
 
-    private VertexPositionColor[] _triangleVertices;
+    private readonly VertexBuffer _vbo;
 
-    private VertexBuffer _vbo;
-
-    public PrimitiveRender3D(GraphicsDevice device, IEnumerable<VertexPositionColor> vertices)
+    public PrimitiveRender3D(GraphicsDevice device, IEnumerable<VertexPositionColor> vertices) :
+        base(new BasicEffect(device)
+        {
+            Alpha = 1f,
+            VertexColorEnabled = true,
+            LightingEnabled = false,
+        })
     {
-        // TODO: We probably want to pass this in manually
-        Effect = new BasicEffect(device);
-        Effect.Alpha = 1f;
-        Effect.VertexColorEnabled = true;
-        Effect.LightingEnabled = false;
-
         _triangleVertices = [.. vertices];
         _vbo = new VertexBuffer(device, typeof(VertexPositionColor), _triangleVertices.Length, BufferUsage.WriteOnly);
         _vbo.SetData(_triangleVertices);
     }
 
-    // TODO: This probably needs to be virtual - it makes sense for the eventual
-    // billboard render to inherit from this class.
-    public void ApplyCamera(PerspectiveCamera camera)
-    {
-        Effect.View = camera.ViewMatrix;
-        // TODO: Apply a transform matrix to this spot right here
-        Effect.World = camera.WorldMatrix;
-        Effect.Projection = camera.ProjectionMatrix;
-    }
-
-    public void Draw(GraphicsDevice device)
+    /// <inheritdoc/>
+    public override void Draw(GraphicsDevice device)
     {
         device.SetVertexBuffer(_vbo);
         foreach (EffectPass pass in Effect.CurrentTechnique.Passes)
