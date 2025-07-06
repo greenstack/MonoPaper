@@ -6,14 +6,16 @@ namespace Paper3D;
 /// <summary>
 /// Renders a triangle list to the chosen graphics device.
 /// </summary>
-public class TriangleListRender3D : Render3DBase
+public class TriangleListRender3D<TVertex> : Render3DBase
+    where TVertex : struct, IVertexType
 {
-    private readonly VertexPositionColor[] _triangleVertices;
+    private readonly TVertex[] _triangleVertices;
 
     private readonly VertexBuffer _vbo;
+    protected VertexBuffer Vbo => _vbo;
 
-    public TriangleListRender3D(GraphicsDevice device, IEnumerable<VertexPositionColor> vertices) :
-        base(new BasicEffect(device)
+    public TriangleListRender3D(GraphicsDevice device, IEnumerable<TVertex> vertices, BasicEffect effect = null) :
+        base(effect ?? new BasicEffect(device)
         {
             Alpha = 1f,
             VertexColorEnabled = true,
@@ -21,7 +23,7 @@ public class TriangleListRender3D : Render3DBase
         })
     {
         _triangleVertices = [.. vertices];
-        _vbo = new VertexBuffer(device, typeof(VertexPositionColor), _triangleVertices.Length, BufferUsage.WriteOnly);
+        _vbo = new VertexBuffer(device, typeof(TVertex), _triangleVertices.Length, BufferUsage.WriteOnly);
         _vbo.SetData(_triangleVertices);
     }
 
@@ -33,6 +35,6 @@ public class TriangleListRender3D : Render3DBase
         {
             pass.Apply();
         }
-        device.DrawPrimitives(PrimitiveType.TriangleList, 0, _triangleVertices.Length);
+        device.DrawPrimitives(PrimitiveType.TriangleList, 0, _triangleVertices.Length/3);
     }
 }
