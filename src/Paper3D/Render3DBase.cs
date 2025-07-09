@@ -20,7 +20,7 @@ public abstract class Render3DBase(BasicEffect effect) : IRender3D
     /// </summary>
     public Transform3 Transform { get; } = new();
 
-    public void ApplyCamera(PerspectiveCamera camera)
+    public virtual void ApplyCamera(PerspectiveCamera camera)
     {
         Effect.View = camera.ViewMatrix;
         Effect.Projection = camera.ProjectionMatrix;
@@ -54,7 +54,7 @@ public abstract class Render3DBase(BasicEffect effect) : IRender3D
         ApplyTransformMatrix();
     }
 
-    public void ApplyTransformMatrix()
+    public virtual void ApplyTransformMatrix()
     {
         // TODO: We need to be more clever about this!
         Effect.World *= Transform.WorldMatrix;

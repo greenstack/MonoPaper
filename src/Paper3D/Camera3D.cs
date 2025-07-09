@@ -13,6 +13,8 @@ public class PerspectiveCamera
     /// </summary>
     public Vector3 Target => _target;
 
+    public Vector3 Forward => Target - Position;
+
     private Vector3 _position;
     /// <summary>
     /// The current position of the camera.
@@ -66,5 +68,5 @@ public class PerspectiveCamera
     /// Regenerates the view matrix. You should only call this method as needed
     /// </summary>
     public void RegenerateViewMatrix() => _viewMatrix = Matrix.CreateLookAt(_position, _target, Vector3.Up);
-    private void RegenerateWorldMatrix() => _worldMatrix = Matrix.CreateWorld(_target, Vector3.Forward, Vector3.Up);
+    private void RegenerateWorldMatrix() => _worldMatrix = Matrix.CreateWorld(_target, Forward, Vector3.Up);
 }

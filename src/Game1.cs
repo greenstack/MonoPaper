@@ -48,6 +48,10 @@ public class Game1 : Game
 
 
         _triangle = new TriangleListRender3D<VertexPositionColor>(GraphicsDevice, triangleVertices);
+
+        Texture2D tex = Content.Load<Texture2D>("MonoCubeTexture");
+        //_billboard = new PlaneRender3D(GraphicsDevice, new SizeF(5, 5), tex);
+        _billboard = new BillboardRender3D(_camera, GraphicsDevice, new SizeF(5, 5), tex);
     }
 
 
@@ -61,8 +65,6 @@ public class Game1 : Game
 
         mesh = Content.Load<Model>("MonoCube");
         _model = new ModelRender3D(mesh);
-        Texture2D tex = Content.Load<Texture2D>("MonoCubeTexture");
-        _billboard = new PlaneRender3D(GraphicsDevice, new SizeF(5, 5), tex);
     }
 
     protected override void Update(GameTime gameTime)
@@ -127,7 +129,7 @@ public class Game1 : Game
         RasterizerState defaultState = GraphicsDevice.RasterizerState;
         RasterizerState rasterizerState = new RasterizerState();
         rasterizerState.CullMode = CullMode.None;
-        //GraphicsDevice.RasterizerState = rasterizerState;
+        GraphicsDevice.RasterizerState = rasterizerState;
 
         //_triangle.ApplyCamera(_camera);
         //_triangle.Draw(GraphicsDevice);
@@ -135,8 +137,8 @@ public class Game1 : Game
         _billboard.Draw(GraphicsDevice);
 
         GraphicsDevice.RasterizerState = defaultState;
-        //_model.ApplyCamera(_camera);
-        //_model.Draw(null);
+        _model.ApplyCamera(_camera);
+        _model.Draw(null);
 
         base.Draw(gameTime);
     }
