@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 
 namespace Paper3D;
 
@@ -30,7 +31,7 @@ public class Game1 : Game
         base.Initialize();
 
         _camera = new(
-            new Vector3(0, 0, -10f),
+            new Vector3(0, 0, 10f),
             Vector3.Zero,
             GraphicsDevice.DisplayMode.AspectRatio,
             45f,
@@ -46,19 +47,22 @@ public class Game1 : Game
         triangleVertices[2] = new VertexPositionColor(new Vector3(2, -2, 0), Color.Blue);
 
 
-        _triangle = new TriangleListRender3D(GraphicsDevice, triangleVertices);
+        _triangle = new TriangleListRender3D<VertexPositionColor>(GraphicsDevice, triangleVertices);
     }
 
 
-    TriangleListRender3D _triangle;
+    TriangleListRender3D<VertexPositionColor> _triangle;
     ModelRender3D _model;
+    PlaneRender3D _billboard;
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-         mesh = Content.Load<Model>("MonoCube");
+        mesh = Content.Load<Model>("MonoCube");
         _model = new ModelRender3D(mesh);
+        Texture2D tex = Content.Load<Texture2D>("MonoCubeTexture");
+        _billboard = new PlaneRender3D(GraphicsDevice, new SizeF(5, 5), tex);
     }
 
     protected override void Update(GameTime gameTime)
@@ -123,14 +127,16 @@ public class Game1 : Game
         RasterizerState defaultState = GraphicsDevice.RasterizerState;
         RasterizerState rasterizerState = new RasterizerState();
         rasterizerState.CullMode = CullMode.None;
-        GraphicsDevice.RasterizerState = rasterizerState;
+        //GraphicsDevice.RasterizerState = rasterizerState;
 
-        _triangle.ApplyCamera(_camera);
-        _triangle.Draw(GraphicsDevice);
+        //_triangle.ApplyCamera(_camera);
+        //_triangle.Draw(GraphicsDevice);
+        _billboard.ApplyCamera(_camera);
+        _billboard.Draw(GraphicsDevice);
 
         GraphicsDevice.RasterizerState = defaultState;
-        _model.ApplyCamera(_camera);
-        _model.Draw(null);
+        //_model.ApplyCamera(_camera);
+        //_model.Draw(null);
 
         base.Draw(gameTime);
     }

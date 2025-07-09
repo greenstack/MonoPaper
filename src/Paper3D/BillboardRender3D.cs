@@ -4,7 +4,7 @@ using MonoGame.Extended;
 
 namespace Paper3D;
 
-public class BillboardRender3D : TriangleListRender3D<VertexPositionNormalTexture>
+public class PlaneRender3D : TriangleListRender3D<VertexPositionNormalTexture>
 {
     // I chose VertexPositionNormalTexture because it's the most open type and
     // we can provide reasonable defaults for it.
@@ -18,7 +18,7 @@ public class BillboardRender3D : TriangleListRender3D<VertexPositionNormalTextur
     private static readonly Vector2 BottomLeftUV = new(UVLeft, UVBottom);
     private static readonly Vector2 BottomRightUV = new(UVRight, UVBottom);
 
-    public BillboardRender3D(GraphicsDevice device, SizeF dimensions, Texture2D texture, BillboardAnchor anchorPoint = BillboardAnchor.MiddleCenter) :
+    public PlaneRender3D(GraphicsDevice device, SizeF dimensions, Texture2D texture, BillboardAnchor anchorPoint = BillboardAnchor.MiddleCenter) :
         base(
             device,
             MakeVertices(dimensions, anchorPoint),
