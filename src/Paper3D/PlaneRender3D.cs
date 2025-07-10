@@ -40,18 +40,18 @@ public class PlaneRender3D : TriangleListRender3D<VertexPositionNormalTexture>
 
         if ((anchorPoint & BillboardAnchor.Right) == BillboardAnchor.Right)
         {
-            left = -billboardSize.Width;
-            right = 0;
-        }
-        else if ((anchorPoint & BillboardAnchor.Left) == BillboardAnchor.Left)
-        {
             left = 0;
             right = billboardSize.Width;
         }
+        else if ((anchorPoint & BillboardAnchor.Left) == BillboardAnchor.Left)
+        {
+            left = -billboardSize.Width;
+            right = 0;
+        }
         else // Center
         {
-            right = billboardSize.Width / 2;
-            left = -right;
+            left = billboardSize.Width / 2;
+            right = -left;
         }
 
         if ((anchorPoint & BillboardAnchor.Top) == BillboardAnchor.Top)
@@ -83,8 +83,8 @@ public class PlaneRender3D : TriangleListRender3D<VertexPositionNormalTexture>
         bottomLeft = new(bottomLeftPos, Vector3.Forward, BottomLeftUV); // 2
         bottomRight = new(bottomRightPos, Vector3.Forward, BottomRightUV); // 3
         return [
-            topLeft, topRight, bottomLeft,
-            bottomLeft, topRight, bottomRight,
+            topRight, bottomLeft, topLeft,
+            bottomRight, bottomLeft, topRight,
         ];
     }
 }
