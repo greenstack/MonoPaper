@@ -108,11 +108,20 @@ public class Game1 : Game
             orbit = !orbit;
         }
 
+        if (Keyboard.GetState().IsKeyDown(Keys.A))
+        {
+            _billboard.Translate(new Vector3(-1f, 0, 0));
+        }
+        if (Keyboard.GetState().IsKeyDown(Keys.D))
+        {
+            _billboard.Translate(new Vector3(1, 0, 0));
+        }
+
         if (orbit)
         {
             Matrix rotationMatrix = Matrix.CreateRotationY(
                                     MathHelper.ToRadians(1f));
-            camPosition = Vector3.Transform(camPosition, 
+            camPosition = Vector3.Transform(camPosition,
                             rotationMatrix);
         }
         _camera.SetPositionDeferred(camPosition);
@@ -128,7 +137,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
         RasterizerState defaultState = GraphicsDevice.RasterizerState;
         RasterizerState rasterizerState = new RasterizerState();
-        rasterizerState.CullMode = CullMode.None;
+        //rasterizerState.CullMode = CullMode.None;
         GraphicsDevice.RasterizerState = rasterizerState;
 
         //_triangle.ApplyCamera(_camera);
