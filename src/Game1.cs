@@ -10,9 +10,6 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    // // Geometric info
-    VertexPositionColor[] triangleVertices;
-
     bool orbit = false;
 
     Model mesh;
@@ -39,23 +36,20 @@ public class Game1 : Game
             1f,
             1000f
         );
-        triangleVertices = new VertexPositionColor[3];
-        triangleVertices[0] = new VertexPositionColor(new Vector3(0, 2, 0), Color.Red);
-
-        triangleVertices[1] = new VertexPositionColor(new Vector3(-2, -2, 0), Color.Green);
-
-        triangleVertices[2] = new VertexPositionColor(new Vector3(2, -2, 0), Color.Blue);
-
-
-        _triangle = new TriangleListRender3D<VertexPositionColor>(GraphicsDevice, triangleVertices);
 
         Texture2D tex = Content.Load<Texture2D>("MonoCubeTexture");
+        Texture2D cassie = Content.Load<Texture2D>("Cassie_2");
+        Texture2D eden = Content.Load<Texture2D>("Eden_4");
         //_billboard = new PlaneRender3D(GraphicsDevice, new SizeF(5, 5), tex);
-        _billboard = new BillboardRender3D(_camera, GraphicsDevice, new SizeF(5, 5), tex);
+        _billboard = new BillboardRender3D(_camera, GraphicsDevice, new SizeF(5, 5), cassie, true);
+
+        // I do not like this. But I suppose it's all I have for now.
+        GraphicsDevice.SamplerStates[0] = new()
+        {
+            Filter = TextureFilter.Point
+        };
     }
 
-
-    TriangleListRender3D<VertexPositionColor> _triangle;
     ModelRender3D _model;
     PlaneRender3D _billboard;
 
@@ -135,17 +129,9 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        RasterizerState defaultState = GraphicsDevice.RasterizerState;
-        RasterizerState rasterizerState = new RasterizerState();
-        //rasterizerState.CullMode = CullMode.None;
-        GraphicsDevice.RasterizerState = rasterizerState;
-
-        //_triangle.ApplyCamera(_camera);
-        //_triangle.Draw(GraphicsDevice);
         _billboard.ApplyCamera(_camera);
         _billboard.Draw(GraphicsDevice);
 
-        GraphicsDevice.RasterizerState = defaultState;
         _model.ApplyCamera(_camera);
         _model.Draw(null);
 

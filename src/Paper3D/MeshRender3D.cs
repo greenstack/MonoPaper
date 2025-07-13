@@ -5,7 +5,7 @@ using MonoGame.Extended;
 
 namespace Paper3D;
 
-public class ModelRender3D : IRender3D
+public class ModelRender3D : IRender3D<BasicEffect>
 {
     readonly Model _model;
 

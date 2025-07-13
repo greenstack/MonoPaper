@@ -7,12 +7,12 @@ namespace Paper3D;
 /// <summary>
 /// Provides an interface for 3D rendering.
 /// </summary>
-public interface IRender3D
+public interface IRender3D<TEffect> where TEffect : Effect, IEffectMatrices
 {
     /// <summary>
     /// The effect used to render the model.
     /// </summary>
-    BasicEffect Effect { get; }
+    TEffect Effect { get; }
 
     // TODO: Introduce a camera interface
     void ApplyCamera(PerspectiveCamera camera);

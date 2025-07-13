@@ -11,13 +11,13 @@ namespace Paper3D;
 /// <param name="device">The device being drawn to.</param>
 /// <param name="camera">The camera that defines this 3D space.</param>
 /// <param name="rasterizerState">The default rasterizer state for this system.</param>
-public class RenderSystem3D(GraphicsDevice device, PerspectiveCamera camera, RasterizerState rasterizerState) : EntityDrawSystem(Aspect.All(typeof(IRender3D)))
+public class RenderSystem3D(GraphicsDevice device, PerspectiveCamera camera, RasterizerState rasterizerState) : EntityDrawSystem(Aspect.All(typeof(int)))
 {
-    ComponentMapper<IRender3D> _3dRenders;
+    //ComponentMapper<IRender3D> _3dRenders;
 
     public override void Initialize(IComponentMapperService mapperService)
     {
-        _3dRenders = mapperService.GetMapper<IRender3D>();
+        //_3dRenders = mapperService.GetMapper<IRender3D>();
     }
 
     public override void Draw(GameTime gameTime)
@@ -28,13 +28,13 @@ public class RenderSystem3D(GraphicsDevice device, PerspectiveCamera camera, Ras
 
         foreach (var entity in ActiveEntities)
         {
-            IRender3D render = _3dRenders.Get(entity);
-            render.ApplyCamera(camera);
+            //IRender3D render = _3dRenders.Get(entity);
+            //render.ApplyCamera(camera);
             // foreach (EffectPass pass in render.Effect.CurrentTechnique.Passes)
             // {
             //     pass.Apply();
             // }
-            render.Draw(device);
+            //render.Draw(device);
         }
 
         throw new System.NotImplementedException();

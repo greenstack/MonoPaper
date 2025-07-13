@@ -8,12 +8,13 @@ namespace Paper3D;
 /// Base class to provide common functionality for 3D renders
 /// </summary>
 /// <param name="effect"></param>
-public abstract class Render3DBase(BasicEffect effect) : IRender3D
+public abstract class Render3DBase<TEffect>(TEffect effect) : IRender3D<TEffect>
+    where TEffect : Effect, IEffectMatrices
 {
     /// <summary>
     /// The effect used to render this 3D model
     /// </summary>
-    public BasicEffect Effect { get; } = effect;
+    public TEffect Effect { get; } = effect;
 
     /// <summary>
     /// The transform of this render.
