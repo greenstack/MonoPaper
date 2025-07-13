@@ -24,10 +24,12 @@ public class BillboardRender3D(PerspectiveCamera camera, GraphicsDevice device, 
 
     public override void ApplyTransformMatrix()
     {
-        Vector3 forward = camera.Forward;
+        Vector3 forward = -camera.Forward;
+        forward.Y = 0;
+        if (forward.LengthSquared() < 0.0001f) forward = Vector3.Forward;
         forward.Normalize();
         // This will always face the camera, but not perfectly
         //Effect.World = Matrix.CreateBillboard(Transform.WorldPosition, camera.Position, Vector3.Up, Vector3.Up);
-        Effect.World = Matrix.CreateConstrainedBillboard(Transform.WorldPosition, camera.Position, Vector3.UnitX, camera.Forward, null);
+        //Effect.World = Matrix.CreateConstrainedBillboard(Transform.WorldPosition, camera.Position, Vector3.UnitX, camera.Forward, null);
     }
 }
